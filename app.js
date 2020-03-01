@@ -49,11 +49,13 @@ const createLocation = (req, res) => {
   })
 }
 
-app.get('/api/v1/locations', getLocations)
-app.get('/api/v1/locations/:id', getLocation)
-app.patch('/api/v1/locations/:id', updateLocation)
-app.delete('/api/v1/locations/:id', deleteLocation)
-app.post('/api/v1/locations', createLocation)
+app.route('/api/v1/locations')
+  .get(getLocations)
+  .post(createLocation)
+app.route('/api/v1/locations/:id')
+  .get(getLocation)
+  .patch(updateLocation)
+  .delete(deleteLocation)
 
 const port = process.env.PORT
 app.listen(port, () => {
