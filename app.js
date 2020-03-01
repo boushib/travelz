@@ -12,14 +12,14 @@ app.get('/', (req, res) => {
   res.status(200).json({message: 'welcome to travelz!'})
 })
 
-app.get('/api/v1/tours', (req, res) => {
+app.get('/api/v1/locations', (req, res) => {
   res.status(200).send({
     status: "success",
     results: locationsObj.length,
     data: {locations: locationsObj}
   })
 })
-app.post('/api/v1/tours', (req, res) => {
+app.post('/api/v1/locations', (req, res) => {
   const id = locationsObj[locationsObj.length - 1]._id + 1
   const location = {_id: id, ...req.body}
   locationsObj.push(location)
