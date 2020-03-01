@@ -9,35 +9,53 @@ const locations = fs.readFileSync(`${__dirname}/data/locations.json`, 'utf-8')
 const locationsObj = JSON.parse(locations)
 
 app.get('/', (req, res) => {
-  res.status(200).json({message: 'welcome to travelz!'})
+  res.status(200).json({ message: 'welcome to travelz!' })
 })
 
-app.get('/api/v1/locations', (req, res) => {
+const getLocations = (req, res) => {
   res.status(200).send({
     status: "success",
     results: locationsObj.length,
-    data: {locations: locationsObj}
+    data: { locations: locationsObj }
   })
-})
-app.get('/api/v1/locations/:id', (req, res) => {
+}
+const getLocation = (req, res) => {
   const location = locationsObj.find(location => location._id === +req.params.id)
-  if(!location) return res.status(404).json({status: "error", message: "Location not found!"})
+  if (!location) return res.status(404).json({ status: "error", message: "Location not found!" })
   res.status(200).send({
     status: "success",
-    data: {location}
+    data: { location }
   })
-})
-app.post('/api/v1/locations', (req, res) => {
+}
+const updateLocation = (req, res) => {
+  res.status(200).json({
+    status: "success",
+    message: "location updated successfuly!"
+  })
+}
+const deleteLocation = (req, res) => {
+  res.json({
+    status: "success",
+    message: "location deleted successfuly!"
+  })
+}
+const createLocation = (req, res) => {
   const id = locationsObj[locationsObj.length - 1]._id + 1
-  const location = {_id: id, ...req.body}
+  const location = { _id: id, ...req.body }
   locationsObj.push(location)
   fs.writeFile(`${__dirname}/data/locations.json`, JSON.stringify(locationsObj), err => {
-    if(err) return console.log(err)
-    res.status(201).json({message: 'Location successfuly created!', data: location})
+    if (err) return console.log(err)
+    res.status(201).json({ message: 'Location successfuly created!', data: location })
   })
-})
+}
+
+app.get('/api/v1/locations', getLocations)
+app.get('/api/v1/locations/:id', getLocation)
+app.patch('/api/v1/locations/:id', updateLocation)
+app.delete('/api/v1/locations/:id', deleteLocation)
+app.post('/api/v1/locations', createLocation)
 
 const port = process.env.PORT
-app.listen(port, ()=> {
+app.listen(port, () => {
   console.log(`app running on port ${port}`)
 })

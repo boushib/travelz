@@ -1,1 +1,42 @@
-[{"_id":1,"name":"Casablanca","country":"Morocco"},{"_id":2,"name":"Marakech","country":"Morocco"},{"_id":3,"name":"Paris","country":"France"},{"_id":4,"name":"London","country":"UK"},{"_id":5,"name":"Sidney","country":"Australia"},{"_id":6,"name":"Dubai","country":"UAE"},{"_id":7,"name":"Istanbul","country":"Turkey"},{"_id":8,"name":"Istanbul","country":"Turkey"}]
+[
+  {
+    "_id": 1,
+    "name": "Casablanca",
+    "country": "Morocco"
+  },
+  {
+    "_id": 2,
+    "name": "Marakech",
+    "country": "Morocco"
+  },
+  {
+    "_id": 3,
+    "name": "Paris",
+    "country": "France"
+  },
+  {
+    "_id": 4,
+    "name": "London",
+    "country": "UK"
+  },
+  {
+    "_id": 5,
+    "name": "Sidney",
+    "country": "Australia"
+  },
+  {
+    "_id": 6,
+    "name": "Dubai",
+    "country": "UAE"
+  },
+  {
+    "_id": 7,
+    "name": "Istanbul",
+    "country": "Turkey"
+  },
+  {
+    "_id": 8,
+    "name": "Istanbul",
+    "country": "Turkey"
+  }
+]
