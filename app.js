@@ -19,6 +19,13 @@ app.get('/api/v1/locations', (req, res) => {
     data: {locations: locationsObj}
   })
 })
+app.get('/api/v1/locations/:id', (req, res) => {
+  const location = locationsObj.find(location => location._id === +req.params.id)
+  res.status(200).send({
+    status: "success",
+    data: {location}
+  })
+})
 app.post('/api/v1/locations', (req, res) => {
   const id = locationsObj[locationsObj.length - 1]._id + 1
   const location = {_id: id, ...req.body}
