@@ -21,6 +21,7 @@ app.get('/api/v1/locations', (req, res) => {
 })
 app.get('/api/v1/locations/:id', (req, res) => {
   const location = locationsObj.find(location => location._id === +req.params.id)
+  if(!location) return res.status(404).json({status: "error", message: "Location not found!"})
   res.status(200).send({
     status: "success",
     data: {location}
