@@ -4,6 +4,10 @@ require('dotenv').config()
 
 const app = express()
 app.use(express.json())
+app.use((req, res, next) => {
+  console.log('hello from inside a middleware! 👋')
+  next()
+})
 
 const locations = fs.readFileSync(`${__dirname}/data/locations.json`, 'utf-8')
 const locationsObj = JSON.parse(locations)
@@ -49,6 +53,39 @@ const createLocation = (req, res) => {
   })
 }
 
+const getUser = (req, res) => {
+  res.status(200).json({
+    status: "success",
+    data: {
+      user: []
+    }
+  })
+}
+const createUser = (req, res) => {
+  res.status(201).json({
+    status: "success",
+    data: {
+      message: "User created successfuly!"
+    }
+  })
+}
+const updateUser = (req, res) => {
+  res.status(201).json({
+    status: "success",
+    data: {
+      message: "User updated successfuly!"
+    }
+  })
+}
+const deleteUser = (req, res) => {
+  res.json({
+    status: "success",
+    data: {
+      message: "User successfully deleted!"
+    }
+  })
+}
+
 app.route('/api/v1/locations')
   .get(getLocations)
   .post(createLocation)
@@ -56,6 +93,14 @@ app.route('/api/v1/locations/:id')
   .get(getLocation)
   .patch(updateLocation)
   .delete(deleteLocation)
+
+app.route('/api/v1/users/:id')
+  .get(getUser)
+  .patch(updateUser)
+  .delete(deleteUser)
+app.route('/api/v1/users')
+  .post(createUser)
+
 
 const port = process.env.PORT
 app.listen(port, () => {
