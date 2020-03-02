@@ -1,7 +1,4 @@
 const express = require('express')
-const fs = require('fs')
-require('dotenv').config()
-
 const userRouter = require('./routes/users')
 const locationRouter = require('./routes/locations')
 
