@@ -4,7 +4,7 @@ const router = express.Router()
 const userConroller = require('../controllers/users')
 
 router.route('/')
-  .post(userConroller.createUser)
+  .post(userConroller.checkBody, userConroller.createUser)
 router.route('/:id')
   .get(userConroller.getUser)
   .patch(userConroller.updateUser)
