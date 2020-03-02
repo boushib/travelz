@@ -86,21 +86,26 @@ const deleteUser = (req, res) => {
   })
 }
 
-app.route('/api/v1/locations')
+const userRouter = express.Router()
+const locationRouter = express.Router()
+
+userRouter.route('/:id')
+  .get(getUser)
+  .patch(updateUser)
+  .delete(deleteUser)
+userRouter.route('/')
+  .post(createUser)
+
+locationRouter.route('/')
   .get(getLocations)
   .post(createLocation)
-app.route('/api/v1/locations/:id')
+locationRouter.route('/:id')
   .get(getLocation)
   .patch(updateLocation)
   .delete(deleteLocation)
 
-app.route('/api/v1/users/:id')
-  .get(getUser)
-  .patch(updateUser)
-  .delete(deleteUser)
-app.route('/api/v1/users')
-  .post(createUser)
-
+app.use('/api/v1/users', userRouter)
+app.use('/api/v1/locations', locationRouter)
 
 const port = process.env.PORT
 app.listen(port, () => {
