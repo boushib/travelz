@@ -1,3 +1,5 @@
+const User = require('../models/user')
+
 exports.checkBody = (req, res, next) => {
   if (!req.body.name || !req.body.country) return res.status(400).json({status: "error", data: {message: "Location name and country are required!"}})
   next()

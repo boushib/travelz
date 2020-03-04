@@ -1,9 +1,7 @@
-const fs = require('fs')
-
-const locations = fs.readFileSync(`${__dirname}/../data/locations.json`, 'utf-8')
-const locationsObj = JSON.parse(locations)
-
+const Location = require('../models/location')
+ 
 exports.getLocations = (req, res) => {
+  // get locations from db
   res.status(200).send({
     status: "success",
     results: locationsObj.length,
@@ -31,11 +29,5 @@ exports.deleteLocation = (req, res) => {
   })
 }
 exports.createLocation = (req, res) => {
-  const id = locationsObj[locationsObj.length - 1]._id + 1
-  const location = { _id: id, ...req.body }
-  locationsObj.push(location)
-  fs.writeFile(`${__dirname}/data/locations.json`, JSON.stringify(locationsObj), err => {
-    if (err) return console.log(err)
-    res.status(201).json({ message: 'Location successfuly created!', data: location })
-  })
+  // const location = { _id: id, ...req.body }
 }
