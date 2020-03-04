@@ -1,5 +1,5 @@
 const Location = require('../models/location')
- 
+
 exports.getLocations = (req, res) => {
   // get locations from db
   res.status(200).send({
@@ -16,6 +16,15 @@ exports.getLocation = (req, res) => {
     data: { location }
   })
 }
+exports.createLocation = async (req, res) => {
+  try {
+    const data = await Location.create(req.body)
+    res.json({ status: "success", data })
+  } catch(err){
+    res.json({ status: "error", message: err })
+    console.log(err)
+  }
+}
 exports.updateLocation = (req, res) => {
   res.status(200).json({
     status: "success",
@@ -27,7 +36,4 @@ exports.deleteLocation = (req, res) => {
     status: "success",
     message: "location deleted successfuly!"
   })
-}
-exports.createLocation = (req, res) => {
-  // const location = { _id: id, ...req.body }
 }
