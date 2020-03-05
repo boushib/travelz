@@ -36,11 +36,14 @@ exports.createLocation = async (req, res) => {
     console.log(err)
   }
 }
-exports.updateLocation = (req, res) => {
-  res.status(200).json({
-    status: "success",
-    message: "location updated successfuly!"
-  })
+exports.updateLocation = async (req, res) => {
+  try {
+    const data = await Location.findByIdAndUpdate(req.params.id, req.body, {new: true})
+    res.status(201).json({status: "success", data})
+  }
+  catch(err){
+    res.json({status: "error", message: err})
+  }
 }
 exports.deleteLocation = (req, res) => {
   res.json({
