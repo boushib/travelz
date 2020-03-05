@@ -1,12 +1,20 @@
 const Location = require('../models/location')
 
-exports.getLocations = (req, res) => {
-  // get locations from db
-  res.status(200).send({
-    status: "success",
-    results: locationsObj.length,
-    data: { locations: locationsObj }
-  })
+exports.getLocations = async (req, res) => {
+ try {
+  const data = await Location.find()
+  res.status(200)
+    .json({
+      status: 'success',
+      results: data.length,
+      data: data
+    })
+ } catch(err){
+   res.json({
+     status: 'error',
+     message: err
+   })
+ }
 }
 exports.getLocation = (req, res) => {
   const location = locationsObj.find(location => location._id === +req.params.id)
