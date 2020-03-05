@@ -1,34 +1,37 @@
 const Location = require('../models/location')
 
 exports.getLocations = async (req, res) => {
- try {
-  const data = await Location.find()
-  res.status(200)
-    .json({
-      status: 'success',
-      results: data.length,
-      data: data
+  try {
+    const data = await Location.find()
+    res.status(200)
+      .json({
+        status: 'success',
+        results: data.length,
+        data: data
+      })
+  } catch (err) {
+    res.json({
+      status: 'error',
+      message: err
     })
- } catch(err){
-   res.json({
-     status: 'error',
-     message: err
-   })
- }
+  }
 }
-exports.getLocation = (req, res) => {
-  const location = locationsObj.find(location => location._id === +req.params.id)
-  if (!location) return res.status(404).json({ status: "error", message: "Location not found!" })
-  res.status(200).send({
-    status: "success",
-    data: { location }
-  })
+exports.getLocation = async (req, res) => {
+  try {
+    const data = await Location.findById(req.params.id)
+    res.status(200).json({ status: "success", data })
+  } catch (err) {
+    res.json({
+      status: 'error',
+      message: err
+    })
+  }
 }
 exports.createLocation = async (req, res) => {
   try {
     const data = await Location.create(req.body)
     res.json({ status: "success", data })
-  } catch(err){
+  } catch (err) {
     res.json({ status: "error", message: err })
     console.log(err)
   }
