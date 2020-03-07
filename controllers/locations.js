@@ -2,7 +2,12 @@ const Location = require('../models/location')
 
 exports.getLocations = async (req, res) => {
   try {
-    const data = await Location.find()
+    const excluded = ['page', 'sort', 'limit']
+    let query = {...req.query}
+    excluded.forEach(el => delete query[el]) 
+    query = JSON.stringify(query)
+    query = JSON.parse(query.replace(/\b(gt|gte|lt|lte)\b/g, str => `$${str}`))
+    const data = await Location.find(query)
     res.status(200)
       .json({
         status: 'success',
@@ -38,16 +43,21 @@ exports.createLocation = async (req, res) => {
 }
 exports.updateLocation = async (req, res) => {
   try {
-    const data = await Location.findByIdAndUpdate(req.params.id, req.body, {new: true})
-    res.status(201).json({status: "success", data})
+    const data = await Location.findByIdAndUpdate(req.params.id, req.body, { new: true })
+    res.status(201).json({ status: "success", data })
   }
-  catch(err){
-    res.json({status: "error", message: err})
+  catch (err) {
+    res.json({ status: "error", message: err })
   }
 }
-exports.deleteLocation = (req, res) => {
-  res.json({
-    status: "success",
-    message: "location deleted successfuly!"
-  })
+exports.deleteLocation = async (req, res) => {
+  try {
+    const data = await Location.findByIdAndDelete(req.params.id)
+    res.json({
+      status: "success",
+      message: "location deleted successfuly!"
+    })
+  } catch(err){
+    res.json({status: 'error', message: err})
+  }
 }
