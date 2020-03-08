@@ -3,11 +3,18 @@ const Location = require('../models/location')
 exports.getLocations = async (req, res) => {
   try {
     const excluded = ['page', 'sort', 'limit']
-    let query = {...req.query}
-    excluded.forEach(el => delete query[el]) 
+    let query = { ...req.query }
+    excluded.forEach(el => delete query[el])
     query = JSON.stringify(query)
     query = JSON.parse(query.replace(/\b(gt|gte|lt|lte)\b/g, str => `$${str}`))
-    const data = await Location.find(query)
+    query = Location.find(query)
+    const sort = req.query.sort
+    if (sort) {
+      const sortBy = sort.split(',').join(' ')
+      query.sort(sortBy)
+      console.log(sortBy)
+    }
+    const data = await query
     res.status(200)
       .json({
         status: 'success',
@@ -57,7 +64,7 @@ exports.deleteLocation = async (req, res) => {
       status: "success",
       message: "location deleted successfuly!"
     })
-  } catch(err){
-    res.json({status: 'error', message: err})
+  } catch (err) {
+    res.json({ status: 'error', message: err })
   }
 }
