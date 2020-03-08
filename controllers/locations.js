@@ -13,6 +13,8 @@ exports.getLocations = async (req, res) => {
       const sortBy = sort.split(',').join(' ')
       query.sort(sortBy)
       console.log(sortBy)
+    } else {
+      query.sort('-createdAt')
     }
     const data = await query
     res.status(200)
