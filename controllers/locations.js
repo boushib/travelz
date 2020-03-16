@@ -1,21 +1,45 @@
 const Location = require('../models/location')
 
+exports.top3 = (req, res, next) => {
+  req.query.limit = 3
+  req.query.sort='-rating,price'
+  next()
+}
+
 exports.getLocations = async (req, res) => {
   try {
-    const excluded = ['page', 'sort', 'limit']
+    const excluded = ['page', 'sort', 'limit', 'fields']
     let query = { ...req.query }
     excluded.forEach(el => delete query[el])
     query = JSON.stringify(query)
     query = JSON.parse(query.replace(/\b(gt|gte|lt|lte)\b/g, str => `$${str}`))
     query = Location.find(query)
+    // sortin
     const sort = req.query.sort
     if (sort) {
       const sortBy = sort.split(',').join(' ')
       query.sort(sortBy)
-      console.log(sortBy)
     } else {
       query.sort('-createdAt')
     }
+    // fields limiting
+    if (req.query.fields) {
+      const fields = req.query.fields.split(',').join(' ') + ' -_id'
+      query = query.select(fields)
+    } else {
+      query = query.select('-__v')
+    }
+    // pagination
+    const page = +req.query.page || 1
+    const limit = +req.query.limit || 100
+    const skip = (page - 1) * limit
+    quey = query.skip(skip).limit(limit)
+
+    if (req.query.page) {
+      const locationsCount = await Location.countDocuments()
+      if (skip >= locationsCount) throw new Error('This page does not exist!')
+    }
+
     const data = await query
     res.status(200)
       .json({
@@ -24,6 +48,7 @@ exports.getLocations = async (req, res) => {
         data: data
       })
   } catch (err) {
+    console.log(err)
     res.json({
       status: 'error',
       message: err
